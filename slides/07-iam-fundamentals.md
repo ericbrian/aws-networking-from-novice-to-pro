@@ -1,0 +1,154 @@
+---
+marp: true
+title: IAM Fundamentals — Identities, AuthN/AuthZ, Roles
+paginate: true
+style: |
+  section {
+    background: #fbf6ea;
+    color: #1f2937;
+  }
+
+  h1, h2, h3 {
+    color: #111827;
+  }
+
+  a { color: #1e40af; }
+
+  code {
+    background: #f3e8d2;
+  }
+
+  pre code {
+    background: #f3e8d2;
+  }
+---
+
+# IAM Fundamentals
+
+Who can do what in AWS (and why).
+
+---
+
+## Learning goals
+
+- Understand IAM identities (users, roles, groups)
+- Separate authentication vs authorization
+- Know how “assume role” works at a conceptual level
+
+---
+
+## Two key concepts
+
+- **Authentication (AuthN)**: who are you?
+- **Authorization (AuthZ)**: what are you allowed to do?
+
+IAM policies primarily answer AuthZ.
+
+---
+
+## IAM identities
+
+- **Users**: long-lived human/service identities (use sparingly)
+- **Groups**: attach policies to a set of users
+- **Roles**: intended for temporary credentials (preferred)
+
+---
+
+## Why roles are preferred
+
+Roles support:
+- temporary credentials (less risk)
+- workload identity (EC2/ECS/Lambda)
+- cross-account access
+
+Avoid embedding long-lived access keys in code.
+
+---
+
+## STS and temporary credentials
+
+When you assume a role, AWS uses **STS** to issue:
+- Access Key ID
+- Secret Access Key
+- Session Token
+
+These expire automatically.
+
+---
+
+## Trust policy vs permissions policy
+
+A role has two policy dimensions:
+
+1. **Trust policy**: who can assume the role?
+2. **Permissions policy**: what can the role do once assumed?
+
+Mixing these up is a very common beginner mistake.
+
+---
+
+## How policy evaluation feels in practice
+
+- Explicit **Deny** beats everything
+- Otherwise you need an **Allow** that matches action + resource + conditions
+- “Not allowed” is the default
+
+We’ll go deeper in the next module.
+
+---
+
+## Root user: treat as glass
+
+- Root has full power
+- Best practice:
+  - enable MFA
+  - don’t use root for daily work
+  - lock away credentials
+
+---
+
+## MFA: why it matters
+
+Multi-factor authentication reduces risk from:
+- password reuse
+- phishing
+- leaked credentials
+
+Use it for:
+- console access
+- sensitive actions (where possible)
+
+---
+
+## Access keys: when (and when not)
+
+Avoid for humans.
+
+If you must use access keys:
+- rotate
+- scope permissions tightly
+- prefer short-lived credentials via role assumption
+
+---
+
+## Summary
+
+- IAM is the authorization system for AWS
+- Prefer roles + STS temporary credentials
+- Trust policy decides who can assume; permissions decide what happens after
+
+Next: policy structure, boundaries, and SCPs.
+
+---
+
+## Acronyms (quick reference)
+
+- **API** — Application Programming Interface
+- **ARN** — Amazon Resource Name
+- **AuthN** — Authentication
+- **AuthZ** — Authorization
+- **EC2** — Elastic Compute Cloud
+- **ECS** — Elastic Container Service
+- **IAM** — Identity and Access Management
+- **MFA** — Multi-Factor Authentication
+- **STS** — Security Token Service
