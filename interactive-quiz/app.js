@@ -4,6 +4,8 @@ const quizSelect = document.getElementById("quizSelect");
 const startBtn = document.getElementById("startBtn");
 const resetBtn = document.getElementById("resetBtn");
 const stage = document.getElementById("stage");
+const progressBarContainer = document.getElementById("progressBar");
+const progressBar = progressBarContainer.querySelector(".progress-bar");
 
 /** @typedef {{prompt: string, choices: string[], answerIndex: number, explanation: string}} Question */
 /** @typedef {{id: string, title: string, questions: Question[]}} Quiz */
@@ -12,7 +14,6 @@ let currentQuiz = /** @type {Quiz | null} */ (null);
 let currentIndex = 0;
 let score = 0;
 let locked = false;
-let selectedIndex = /** @type {number | null} */ (null);
 
 function escapeHtml(str) {
   return str
@@ -23,11 +24,39 @@ function escapeHtml(str) {
     .replaceAll("'", "&#039;");
 }
 
+function updateProgress() {
+  if (!currentQuiz) {
+    progressBarContainer.style.display = 'none';
+    return;
+  }
+  progressBarContainer.style.display = 'block';
+  const total = currentQuiz.questions.length;
+  // If we are at results, show 100%
+  const progress = locked && currentIndex === total - 1 
+    ? 100 
+    : Math.round((currentIndex / total) * 100);
+    
+  progressBar.style.width = `${progress}%`;
+}
+
 function renderIntro() {
+  // Reset UI state
   stage.innerHTML = `
-    <p class="meta">Pick a quiz above, then press <strong>Start</strong>.</p>
-    <p class="small">Answers are locked after you click. You can’t change them.</p>
+    <div style="text-align: center; padding: 40px 0;">
+      <h3 style="margin-top: 0; font-size: 20px;">Ready to test your knowledge?</h3>
+      <p style="color: var(--text-muted); line-height: 1.6;">
+        Select a topic from the menu above and click <strong>Start Quiz</strong>.<br>
+        Questions are locked immediately after answering.
+      </p>
+    </div>
   `;
+  
+  // Hide in-quiz controls
+  resetBtn.style.display = "none";
+  startBtn.disabled = false;
+  startBtn.innerText = "Start Quiz";
+  quizSelect.disabled = false;
+  progressBarContainer.style.display = "none";
 }
 
 function renderQuestion() {
@@ -39,25 +68,32 @@ function renderQuestion() {
   const choicesHtml = q.choices
     .map((text, idx) => {
       const disabled = locked ? "disabled" : "";
-      return `<button class="choice" data-choice="${idx}" ${disabled}>${escapeHtml(text)}</button>`;
+      return `<button class="choice-btn" data-choice="${idx}" ${disabled}>${escapeHtml(text)}</button>`;
     })
     .join("");
 
   stage.innerHTML = `
-    <div>
-      <div class="meta">Question ${currentIndex + 1} of ${total} · Score ${score}/${total}</div>
-      <h2 class="quiz-title">${escapeHtml(currentQuiz.title)}</h2>
-      <div class="q">${escapeHtml(q.prompt)}</div>
-      <div class="choices">${choicesHtml}</div>
-      <div id="feedback"></div>
-      <div class="footer-row">
-        <button id="prevBtn" ${currentIndex === 0 ? "disabled" : ""}>Previous</button>
-        <button id="nextBtn" class="primary" disabled>Next</button>
+    <div class="fade-in">
+      <div class="quiz-header">
+        <div class="quiz-meta">
+          <span>Question ${currentIndex + 1} of ${total}</span>
+          <span>Score: ${score}</span>
+        </div>
+        <div class="question-text">${escapeHtml(q.prompt)}</div>
       </div>
-      <p class="small" style="margin-top: 10px;">Once you answer a question, it’s locked.</p>
+      
+      <div class="choices">${choicesHtml}</div>
+      
+      <div id="feedback"></div>
+      
+      <div class="nav-row">
+        <button id="prevBtn" class="secondary" disabled style="opacity: 0">Previous</button> <!-- Hidden but keeps layout -->
+        <button id="nextBtn" class="primary" disabled>Next Question</button>
+      </div>
     </div>
   `;
 
+  updateProgress();
   wireChoiceHandlers();
   wireNavHandlers();
 }
@@ -70,7 +106,6 @@ function wireChoiceHandlers() {
       if (locked) return;
 
       const idx = Number(btn.getAttribute("data-choice"));
-      selectedIndex = idx;
       locked = true;
 
       const q = currentQuiz.questions[currentIndex];
@@ -88,29 +123,26 @@ function wireChoiceHandlers() {
       const feedback = stage.querySelector("#feedback");
       feedback.innerHTML = `
         <div class="feedback ${isCorrect ? "ok" : "bad"}">
-          <strong>${isCorrect ? "Correct" : "Incorrect"}.</strong>
+          <strong>${isCorrect ? "Correct!" : "Incorrect."}</strong>
           <div class="explain">${escapeHtml(q.explanation)}</div>
         </div>
       `;
 
       const nextBtn = stage.querySelector("#nextBtn");
       nextBtn.disabled = false;
+      
+      // If it's the last question, change button text
+      if (currentIndex === currentQuiz.questions.length - 1) {
+        nextBtn.innerText = "View Results";
+      }
+      
+      updateProgress(); // Ensure bar fills a bit if we want strictly "completed questions" logic, but standard is fine
     });
   }
 }
 
 function wireNavHandlers() {
-  const prevBtn = stage.querySelector("#prevBtn");
   const nextBtn = stage.querySelector("#nextBtn");
-
-  prevBtn.addEventListener("click", () => {
-    if (!currentQuiz) return;
-    if (currentIndex === 0) return;
-
-    // Navigation backward is allowed, but answers are locked per question.
-    // For simplicity, we prevent revisiting past questions to change score.
-    // So: backward navigation is disabled after answering.
-  });
 
   nextBtn.addEventListener("click", () => {
     if (!currentQuiz) return;
@@ -125,43 +157,36 @@ function wireNavHandlers() {
 
     currentIndex += 1;
     locked = false;
-    selectedIndex = null;
     renderQuestion();
   });
-
-  // Disable Previous entirely to enforce “no fixing answers”.
-  prevBtn.disabled = true;
-  prevBtn.title = "Disabled to prevent changing answers.";
 }
 
 function renderResults() {
   if (!currentQuiz) return;
   const total = currentQuiz.questions.length;
   const pct = Math.round((score / total) * 100);
+  
+  progressBar.style.width = '100%';
 
   stage.innerHTML = `
-    <h2 class="quiz-title">${escapeHtml(currentQuiz.title)} — Results</h2>
-    <div class="results">
-      <p class="score">Grade: ${score}/${total} (${pct}%)</p>
-      <p class="meta">Your answers were locked after each selection.</p>
-      <div class="footer-row">
-        <button id="restartBtn" class="primary">Retake this quiz</button>
-        <button id="pickBtn">Pick a different quiz</button>
+    <div class="results-card fade-in">
+      <h2 style="margin-top: 0">Quiz Complete!</h2>
+      <div class="score-display">${pct}%</div>
+      <div class="score-label">You scored ${score} out of ${total}</div>
+      
+      <div class="nav-row" style="justify-content: center; gap: 16px;">
+        <button id="restartResultsBtn" class="primary">Retake Quiz</button>
+        <button id="newQuizBtn" class="secondary">Choose Another</button>
       </div>
     </div>
   `;
 
-  stage.querySelector("#restartBtn").addEventListener("click", () => {
+  stage.querySelector("#restartResultsBtn").addEventListener("click", () => {
     startQuiz(currentQuiz.id);
   });
 
-  stage.querySelector("#pickBtn").addEventListener("click", () => {
-    currentQuiz = null;
-    currentIndex = 0;
-    score = 0;
-    locked = false;
-    selectedIndex = null;
-    renderIntro();
+  stage.querySelector("#newQuizBtn").addEventListener("click", () => {
+    resetToMenu();
   });
 }
 
@@ -173,9 +198,22 @@ function startQuiz(id) {
   currentIndex = 0;
   score = 0;
   locked = false;
-  selectedIndex = null;
+  
+  // UI State for active quiz
+  resetBtn.style.display = "inline-flex";
+  startBtn.disabled = true;
+  startBtn.innerText = "In Progress...";
+  quizSelect.disabled = true;
 
   renderQuestion();
+}
+
+function resetToMenu() {
+  currentQuiz = null;
+  currentIndex = 0;
+  score = 0;
+  locked = false;
+  renderIntro();
 }
 
 function populateSelect() {
@@ -189,13 +227,11 @@ startBtn.addEventListener("click", () => {
 });
 
 resetBtn.addEventListener("click", () => {
-  currentQuiz = null;
-  currentIndex = 0;
-  score = 0;
-  locked = false;
-  selectedIndex = null;
-  renderIntro();
+  if(confirm("Are you sure you want to exit the current quiz?")) {
+    resetToMenu();
+  }
 });
 
+// Initialization
 populateSelect();
 renderIntro();
