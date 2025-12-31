@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AWS Networking + IAM — Interactive Quizzes</title>
+    <style>
+      :root {
+        --paper: #fbf6ea;
+        --ink: #1f2937;
+        --ink-strong: #111827;
+        --muted: #6b7280;
+        --card: #fffaf0;
+        --border: #e7dbc3;
+        --accent: #1e40af;
+        --ok: #166534;
+        --bad: #991b1b;
+        --code: #f3e8d2;
+      }
+
+      html, body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background: var(--paper);
+        color: var(--ink);
+      }
+
+      .container {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 24px 16px 64px;
+      }
+
+      header {
+        display: flex;
+        gap: 16px;
+        align-items: baseline;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 20px;
+        color: var(--ink-strong);
+      }
+
+      .sub {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+      }
+
+      .row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      label {
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      select {
+        padding: 8px 10px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: #fff;
+        min-width: 360px;
+      }
+
+      button {
+        padding: 9px 12px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: #fff;
+        color: var(--ink-strong);
+        cursor: pointer;
+      }
+
+      button.primary {
+        border-color: rgba(30, 64, 175, 0.35);
+        background: rgba(30, 64, 175, 0.08);
+        color: var(--ink-strong);
+      }
+
+      button:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+
+      .quiz-title {
+        font-size: 18px;
+        margin: 0 0 6px;
+        color: var(--ink-strong);
+      }
+
+      .meta {
+        color: var(--muted);
+        font-size: 13px;
+        margin-bottom: 12px;
+      }
+
+      .q {
+        margin-top: 12px;
+        font-size: 16px;
+        color: var(--ink-strong);
+      }
+
+      .choices {
+        margin-top: 10px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .choice {
+        text-align: left;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: #fff;
+      }
+
+      .choice.correct {
+        border-color: rgba(22, 101, 52, 0.45);
+        background: rgba(22, 101, 52, 0.08);
+      }
+
+      .choice.wrong {
+        border-color: rgba(153, 27, 27, 0.45);
+        background: rgba(153, 27, 27, 0.08);
+      }
+
+      .feedback {
+        margin-top: 12px;
+        padding: 12px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: #fff;
+      }
+
+      .feedback.ok {
+        border-color: rgba(22, 101, 52, 0.45);
+      }
+
+      .feedback.bad {
+        border-color: rgba(153, 27, 27, 0.45);
+      }
+
+      .feedback strong {
+        color: var(--ink-strong);
+      }
+
+      .explain {
+        margin-top: 8px;
+        color: var(--ink);
+      }
+
+      .footer-row {
+        margin-top: 14px;
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .kbd {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        background: var(--code);
+        padding: 2px 6px;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+      }
+
+      .hr {
+        height: 1px;
+        background: var(--border);
+        margin: 16px 0;
+      }
+
+      .results {
+        margin-top: 10px;
+        font-size: 14px;
+      }
+
+      .results .score {
+        font-size: 18px;
+        color: var(--ink-strong);
+        margin: 0 0 6px;
+      }
+
+      .small {
+        font-size: 13px;
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div>
+          <h1>AWS Networking + IAM — Interactive Quizzes</h1>
+          <div class="sub">One question at a time · click an answer · locked after selection · grade at the end</div>
+        </div>
+        <div class="sub">Tip: run with <span class="kbd">python3 -m http.server</span></div>
+      </header>
+
+      <div class="card">
+        <div class="row" style="justify-content: space-between;">
+          <div>
+            <label for="quizSelect">Choose a quiz</label><br />
+            <select id="quizSelect"></select>
+          </div>
+          <div class="row">
+            <button id="startBtn" class="primary">Start</button>
+            <button id="resetBtn">Reset</button>
+          </div>
+        </div>
+
+        <div class="hr"></div>
+
+        <div id="stage"></div>
+      </div>
+
+      <p class="small" style="margin-top: 12px;">
+        If you opened this via <span class="kbd">file://</span> and something doesn’t load, use a local server:
+        <span class="kbd">python3 -m http.server 8000</span> from the repo root, then open
+        <span class="kbd">http://localhost:8000/interactive-quiz/</span>.
+      </p>
+    </div>
+
+    <script type="module" src="./quiz-bank.js"></script>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

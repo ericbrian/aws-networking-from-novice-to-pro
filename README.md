@@ -50,6 +50,21 @@ You can also just read the Markdown files directly—each `---` separator is a n
 9. `slides/09-logging-detection-response.md`
 10. `slides/10-troubleshooting-and-design.md`
 
+## Interactive quizzes
+
+There’s a simple interactive quiz runner that:
+- shows one question at a time
+- locks your answer after you click
+- tells you whether you were correct
+- shows your final grade
+
+Because browsers may block module loading from `file://`, run a local server from the repo root:
+
+- `python3 -m http.server 8000`
+
+Then open:
+- `http://localhost:8000/interactive-quiz/`
+
 ## Is this a good start from novice → pro?
 
 Yes—**if you also practice**.
