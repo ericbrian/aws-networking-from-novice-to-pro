@@ -67,6 +67,18 @@ How to think like a pro.
 
 ---
 
+## Common IAM + Network gotchas
+
+- SG allows traffic, but **NACL blocks return path** (ephemeral ports!)
+- IAM policy allows, but **VPC endpoint policy denies**
+- Role's **trust policy doesn't list your principal** — you have permission to call `sts:AssumeRole`, but the role itself doesn't trust you (check the role's "Trust relationships" tab)
+- Condition `aws:SourceVpce` doesn't match actual endpoint ID
+- Cross-account: **missing resource policy** on target side
+- Private subnet can't reach AWS APIs (need NAT or endpoint)
+- DNS not resolving to endpoint IP (private DNS not enabled)
+
+---
+
 ## Avoid common architecture traps
 
 - Overlapping CIDRs (limits future connectivity)
@@ -88,6 +100,7 @@ How to think like a pro.
 ## Multi-account is a feature
 
 At scale, prefer:
+
 - separate AWS accounts for prod/dev/security/log-archive
 - guardrails via SCPs
 - centralized logs
@@ -108,6 +121,7 @@ Blast radius reduction is “pro-level” security.
 ## Final summary
 
 You now have a full mental model for:
+
 - VPC routing + reachability
 - egress patterns + endpoints
 - multi-VPC and hybrid connectivity

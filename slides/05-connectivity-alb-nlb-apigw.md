@@ -43,6 +43,7 @@ Expose services safely and predictably.
 - Layer 4 (TCP/UDP): pass-through connections
 
 AWS choices map cleanly:
+
 - **ALB** (L7)
 - **NLB** (L4)
 
@@ -51,6 +52,7 @@ AWS choices map cleanly:
 ## ALB (Application Load Balancer)
 
 Great for:
+
 - HTTP/HTTPS apps
 - path-based routing (`/api`, `/static`)
 - host-based routing (`api.example.com`)
@@ -61,11 +63,13 @@ Great for:
 ## NLB (Network Load Balancer)
 
 Great for:
+
 - TCP/UDP services
 - very high connection rates
 - preserving client IP (common requirement)
 
 Often used for:
+
 - gRPC over HTTP/2 with TCP mode
 - non-HTTP protocols
 
@@ -76,6 +80,7 @@ Often used for:
 Load balancers are only as good as health checks.
 
 Common pitfalls:
+
 - checking the wrong path
 - health check blocked by SG/NACL
 - app returns 302/401 and is marked unhealthy
@@ -85,11 +90,13 @@ Common pitfalls:
 ## API Gateway (front door for APIs)
 
 Great for:
+
 - public APIs with auth, throttling, usage plans
 - request validation/transforms
 - integrating with Lambda or HTTP backends
 
 Often paired with:
+
 - WAF
 - custom domains + TLS
 
@@ -98,6 +105,7 @@ Often paired with:
 ## Private APIs
 
 You can keep APIs private via:
+
 - internal ALB/NLB
 - API Gateway private endpoints
 - VPC endpoints / PrivateLink patterns
@@ -109,6 +117,7 @@ Goal: avoid exposing workloads directly.
 ## TLS termination choices
 
 You can terminate TLS at:
+
 - ALB / API Gateway (common)
 - NLB (possible)
 - the instance/service (end-to-end)
@@ -122,11 +131,43 @@ Tradeoff: central manageability vs strict end-to-end encryption.
 Your “front door” should be the only internet-facing component.
 
 Typical pattern:
+
 - Internet → ALB/API GW
 - ALB/API GW → private app targets
 
 Use SG references:
+
 - ALB SG → app SG
+
+---
+
+## ALB security features
+
+- **Security groups**: ALB gets its own SG (control inbound sources)
+- **WAF integration**: Block SQL injection, XSS, bad bots at the edge
+- **Authentication**: Built-in OIDC/Cognito auth before hitting backend
+- **Access logs**: Who accessed what, when (S3 destination)
+- **TLS policies**: Choose cipher suites (e.g., `ELBSecurityPolicy-TLS13-1-2-2021-06`)
+
+Pattern: WAF → ALB → private targets
+
+---
+
+## WAF for ALB (quick primer)
+
+AWS WAF sits in front of ALB to:
+
+- Rate-limit requests (prevent abuse)
+- Block known-bad IPs (managed rule sets)
+- Filter requests by headers/body/geo
+
+Start with **AWS Managed Rules**, then customize.
+
+Common rule groups:
+
+- `AWSManagedRulesCommonRuleSet`
+- `AWSManagedRulesSQLiRuleSet`
+- `AWSManagedRulesKnownBadInputsRuleSet`
 
 ---
 

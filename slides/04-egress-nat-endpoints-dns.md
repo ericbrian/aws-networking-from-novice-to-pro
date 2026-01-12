@@ -40,6 +40,7 @@ How private workloads talk to AWS services and the internet.
 ## Egress: define what you mean
 
 When someone says “needs internet”, ask:
+
 - Does it need the **public internet**?
 - Or just **AWS APIs** (S3, STS, ECR, CloudWatch)?
 
@@ -50,6 +51,7 @@ These are different designs.
 ## NAT Gateway (what it is)
 
 NAT Gateway provides:
+
 - outbound connectivity from private subnets to the internet
 - source IP translation to the NAT’s public IP
 
@@ -73,6 +75,7 @@ This avoids cross-AZ dependency during failure.
 - High egress workloads can get expensive
 
 Often cheaper/better:
+
 - VPC endpoints for AWS services
 - private registries/mirrors
 
@@ -81,10 +84,12 @@ Often cheaper/better:
 ## VPC Endpoints: the big idea
 
 A VPC endpoint lets private resources reach AWS services
+
 - **without** using the public internet
 - often without NAT
 
 Two main types:
+
 - **Gateway endpoints**
 - **Interface endpoints (PrivateLink)**
 
@@ -93,10 +98,12 @@ Two main types:
 ## Gateway endpoints
 
 Used for:
+
 - S3
 - DynamoDB
 
 Characteristics:
+
 - route-table based
 - no ENIs
 - great for high-throughput private access
@@ -108,6 +115,7 @@ Characteristics:
 Used for many AWS services (and 3rd party/private services).
 
 Characteristics:
+
 - creates **ENIs** in your subnets
 - uses **security groups**
 - DNS can map service hostnames to endpoint IPs
@@ -119,18 +127,40 @@ Characteristics:
 VPC endpoints can have policies.
 
 Think of them as:
+
 - an additional authorization guardrail
 
 Example: allow only specific S3 buckets via the endpoint.
 
 ---
 
+## Endpoint policy example (S3)
+
+```json
+{
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::my-approved-bucket/*"
+    }
+  ]
+}
+```
+
+This restricts the endpoint to specific buckets—defense in depth.
+
+---
+
 ## DNS: what changes with endpoints?
 
 With private DNS enabled for an interface endpoint:
+
 - `service.region.amazonaws.com` resolves to private IPs (the endpoint)
 
 Without it:
+
 - the hostname resolves publicly, and you may need NAT/IGW
 
 ---
@@ -138,9 +168,11 @@ Without it:
 ## Route 53 Resolver (in VPC)
 
 Inside a VPC:
+
 - the VPC resolver answers DNS queries
 
 For hybrid DNS you can use:
+
 - inbound/outbound **Resolver endpoints**
 - conditional forwarding rules
 
@@ -149,9 +181,11 @@ For hybrid DNS you can use:
 ## Private Hosted Zones
 
 Private hosted zones enable:
+
 - split-horizon DNS (internal vs external names)
 
 Examples:
+
 - `db.internal.example.com` only resolvable inside VPCs
 
 ---

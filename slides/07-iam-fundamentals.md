@@ -57,6 +57,7 @@ IAM policies primarily answer AuthZ.
 ## Why roles are preferred
 
 Roles support:
+
 - temporary credentials (less risk)
 - workload identity (EC2/ECS/Lambda)
 - cross-account access
@@ -65,9 +66,34 @@ Avoid embedding long-lived access keys in code.
 
 ---
 
+## Instance profiles (EC2 + roles)
+
+An **instance profile** is how you attach a role to EC2.
+
+- EC2 queries the instance metadata service
+- Gets temporary credentials automatically
+- No keys stored on the instance
+
+This is the right way to give EC2 AWS API access.
+
+---
+
+## IAM Identity Center (modern SSO)
+
+For human access, consider **IAM Identity Center** (formerly AWS SSO):
+
+- centralized workforce identity management
+- integrates with corporate directories
+- creates temporary role sessions
+
+Best practice for organizations with multiple accounts.
+
+---
+
 ## STS and temporary credentials
 
 When you assume a role, AWS uses **STS** to issue:
+
 - Access Key ID
 - Secret Access Key
 - Session Token
@@ -110,11 +136,13 @@ We’ll go deeper in the next module.
 ## MFA: why it matters
 
 Multi-factor authentication reduces risk from:
+
 - password reuse
 - phishing
 - leaked credentials
 
 Use it for:
+
 - console access
 - sensitive actions (where possible)
 
@@ -125,6 +153,7 @@ Use it for:
 Avoid for humans.
 
 If you must use access keys:
+
 - rotate
 - scope permissions tightly
 - prefer short-lived credentials via role assumption
@@ -151,4 +180,5 @@ Next: policy structure, boundaries, and SCPs.
 - **ECS** — Elastic Container Service
 - **IAM** — Identity and Access Management
 - **MFA** — Multi-Factor Authentication
+- **SSO** — Single Sign-On
 - **STS** — Security Token Service

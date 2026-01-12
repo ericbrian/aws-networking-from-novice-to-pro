@@ -40,6 +40,7 @@ How AWS decides “allowed” at the API level.
 ## Policy building blocks
 
 A statement typically includes:
+
 - `Effect`: Allow or Deny
 - `Action`: what API calls
 - `Resource`: which ARNs
@@ -68,12 +69,39 @@ If nothing matches, default is deny.
 ## Conditions are where power lives
 
 Conditions let you do things like:
+
 - restrict by source IP/VPC endpoint
 - require MFA
 - require tags
 - restrict to TLS
 
 This is how you implement real-world guardrails.
+
+---
+
+## Powerful condition patterns
+
+Key condition keys to know:
+
+- `aws:SourceVpce`: Require access via specific VPC endpoint
+- `aws:PrincipalOrgID`: Trust roles only from your AWS Org
+- `aws:RequestedRegion`: Deny actions outside approved regions
+- `aws:ResourceTag/Environment`: Allow actions only on tagged resources
+- `kms:ViaService`: Allow KMS use only via specific AWS services
+- `aws:SecureTransport`: Require TLS (deny HTTP)
+
+---
+
+## IAM meets networking
+
+Some controls require **both** IAM and network to agree:
+
+- **VPC Endpoint policies** + IAM identity policy
+- **Resource policies** (S3 bucket) can require `aws:SourceVpce`
+- **PrivateLink** services may have their own authorization layer
+- **API Gateway** resource policies can restrict by VPC/IP
+
+Defense in depth: layer IAM with network controls.
 
 ---
 
@@ -84,6 +112,7 @@ A **permissions boundary** is a limit on a role/user.
 Think: “Even if identity policies allow it, boundary must also allow it.”
 
 Common use:
+
 - delegated admin (teams can create roles, but only within a safe envelope)
 
 ---
@@ -95,6 +124,7 @@ A **Service Control Policy (SCP)** is an account/OU-level guardrail.
 Think: “Maximum permissions an account can use.”
 
 Important:
+
 - SCPs **do not grant** permissions.
 - SCPs can block actions even for admins.
 
@@ -103,6 +133,7 @@ Important:
 ## Where SCPs fit
 
 Evaluation is roughly:
+
 - SCPs set the outer limits
 - permission boundary may further limit
 - identity policy must allow
@@ -147,6 +178,10 @@ Next: logging, detection, and response.
 - **AWS** — Amazon Web Services
 - **IAM** — Identity and Access Management
 - **JSON** — JavaScript Object Notation
+- **KMS** — Key Management Service
 - **MFA** — Multi-Factor Authentication
 - **OU** — Organizational Unit
 - **SCP** — Service Control Policy
+- **TLS** — Transport Layer Security
+- **VPC** — Virtual Private Cloud
+- **VPCE** — VPC Endpoint
