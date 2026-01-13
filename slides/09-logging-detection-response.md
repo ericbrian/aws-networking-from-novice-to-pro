@@ -37,6 +37,16 @@ Make security and troubleshooting evidence-based.
 
 ---
 
+## Agenda
+
+- CloudTrail (API audit)
+- CloudWatch (metrics + logs)
+- VPC Flow Logs (network evidence)
+- Config (change history)
+- Detection + response loop
+
+---
+
 ## CloudTrail (the audit log)
 
 CloudTrail records:
@@ -134,13 +144,19 @@ Great for: S3, IAM roles trust, KMS, and more.
 
 ---
 
-## Summary
+## Recap
 
-- CloudTrail is the “who did what” record
-- Flow logs help with “did the network allow it?”
-- Detection services help surface signals
+- CloudTrail (API audit)
+- CloudWatch (metrics + logs)
+- VPC Flow Logs (network evidence)
+- Config (change history)
+- Detection + response loop
 
-Next: troubleshooting and design patterns.
+---
+
+## Next
+
+Troubleshooting and design patterns.
 
 ---
 

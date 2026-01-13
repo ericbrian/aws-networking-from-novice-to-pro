@@ -37,6 +37,16 @@ How to think like a pro.
 
 ---
 
+## Agenda
+
+- A repeatable troubleshooting loop
+- Network debugging checklist
+- IAM debugging checklist
+- Common IAM + network gotchas
+- Practical design principles + next steps
+
+---
+
 ## The pro troubleshooting loop
 
 1. Define the symptom precisely (who, what, where, when)
@@ -118,15 +128,13 @@ Blast radius reduction is “pro-level” security.
 
 ---
 
-## Final summary
+## Recap
 
-You now have a full mental model for:
-
-- VPC routing + reachability
-- egress patterns + endpoints
-- multi-VPC and hybrid connectivity
-- IAM and authorization guardrails
-- logging and response
+- A repeatable troubleshooting loop
+- Network debugging checklist
+- IAM debugging checklist
+- Common IAM + network gotchas
+- Practical design principles + next steps
 
 ---
 

@@ -37,6 +37,15 @@ How private workloads talk to AWS services and the internet.
 
 ---
 
+## Agenda
+
+- Egress patterns (what “needs internet” really means)
+- NAT Gateway design tradeoffs
+- VPC Endpoints (Gateway + Interface)
+- DNS and Route 53 Resolver behavior
+
+---
+
 ## Egress: define what you mean
 
 When someone says “needs internet”, ask:
@@ -190,13 +199,18 @@ Examples:
 
 ---
 
-## Summary
+## Recap
 
-- NAT is for general internet egress
-- Endpoints are for private access to AWS services
-- DNS configuration often decides which path is used
+- Egress patterns (what “needs internet” really means)
+- NAT Gateway design tradeoffs
+- VPC Endpoints (Gateway + Interface)
+- DNS and Route 53 Resolver behavior
 
-Next: connecting clients and services (ALB, NLB, API Gateway).
+---
+
+## Next
+
+Connecting clients and services (ALB, NLB, API Gateway).
 
 ---
 

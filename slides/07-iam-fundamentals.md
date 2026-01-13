@@ -37,6 +37,16 @@ Who can do what in AWS (and why).
 
 ---
 
+## Agenda
+
+- AuthN vs AuthZ (what IAM actually does)
+- Users/groups/roles (and why roles win)
+- STS + assume-role (temporary credentials)
+- EC2 instance profiles
+- Identity Center for humans
+
+---
+
 ## Two key concepts
 
 - **Authentication (AuthN)**: who are you?
@@ -160,13 +170,19 @@ If you must use access keys:
 
 ---
 
-## Summary
+## Recap
 
-- IAM is the authorization system for AWS
-- Prefer roles + STS temporary credentials
-- Trust policy decides who can assume; permissions decide what happens after
+- AuthN vs AuthZ (what IAM actually does)
+- Users/groups/roles (and why roles win)
+- STS + assume-role (temporary credentials)
+- EC2 instance profiles
+- Identity Center for humans
 
-Next: policy structure, boundaries, and SCPs.
+---
+
+## Next
+
+Policy structure, boundaries, and SCPs.
 
 ---
 

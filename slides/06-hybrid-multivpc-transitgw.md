@@ -37,9 +37,20 @@ Peering vs Transit Gateway vs VPN vs Direct Connect.
 
 ---
 
+## Agenda
+
+- Why multi-VPC/hybrid gets hard (scale)
+- VPC Peering (and gotchas)
+- Transit Gateway (hub + segmentation)
+- VPN vs Direct Connect
+- Routing/inspection principles
+
+---
+
 ## The scaling problem
 
 As VPC count grows, you need:
+
 - predictable routing
 - centralized inspection (sometimes)
 - segmentation (prod/dev/shared)
@@ -68,6 +79,7 @@ Great for: small numbers of VPCs or explicit pairs.
 ## Option 2: Transit Gateway (TGW)
 
 Think of TGW as a hub that:
+
 - connects many VPCs and on-prem networks
 - supports transitive routing
 - enables segmentation via TGW route tables
@@ -132,14 +144,19 @@ Start simple unless policy requires otherwise.
 
 ---
 
-## Summary
+## Recap
 
-- Peering: simple pairs, no transitive routing
-- TGW: scalable hub with segmentation
-- VPN: fast hybrid over internet
-- DX: dedicated private connectivity
+- Why multi-VPC/hybrid gets hard (scale)
+- VPC Peering (and gotchas)
+- Transit Gateway (hub + segmentation)
+- VPN vs Direct Connect
+- Routing/inspection principles
 
-Next: IAM fundamentals (who can do what).
+---
+
+## Next
+
+IAM fundamentals (who can do what).
 
 ---
 

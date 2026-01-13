@@ -37,6 +37,15 @@ How AWS decides “allowed” vs “blocked”.
 
 ---
 
+## Agenda
+
+- Security Groups (stateful)
+- NACLs (stateless)
+- Stateful vs stateless in practice (ephemeral ports)
+- Reachability mindset + debugging tools
+
+---
+
 ## Security Groups (SGs)
 
 - Attached to **ENIs** (instance/network interface)
@@ -267,13 +276,18 @@ One “deny” anywhere breaks it.
 
 ---
 
-## Summary
+## Recap
 
-- SGs: stateful allow-only, attached to ENIs
-- NACLs: stateless allow/deny, attached to subnets
-- Debug with a chain mindset
+- Security Groups (stateful)
+- NACLs (stateless)
+- Stateful vs stateless in practice (ephemeral ports)
+- Reachability mindset + debugging tools
 
-Next: NAT, endpoints, and DNS for private networking.
+---
+
+## Next
+
+NAT, endpoints, and DNS for private networking.
 
 ---
 

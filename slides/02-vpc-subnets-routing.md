@@ -37,6 +37,15 @@ How AWS traffic actually moves.
 
 ---
 
+## Agenda
+
+- CIDR planning
+- Subnet layout (AZ-scoped)
+- Route tables + next hops (IGW, NAT)
+- Common architecture + debugging checklist
+
+---
+
 ## CIDR planning (practical)
 
 - Pick a VPC CIDR big enough for growth
@@ -147,13 +156,18 @@ AWS provides the underlying routing.
 
 ---
 
-## Summary
+## Recap
 
-- CIDR choice sets your future constraints
-- Route tables define reachability
-- IGW is for public, NAT is for private egress
+- CIDR planning
+- Subnet layout (AZ-scoped)
+- Route tables + next hops (IGW, NAT)
+- Common architecture + debugging checklist
 
-Next: security groups, NACLs, and reachability.
+---
+
+## Next
+
+Security groups, NACLs, and reachability.
 
 ---
 

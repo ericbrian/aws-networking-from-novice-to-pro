@@ -37,6 +37,15 @@ Expose services safely and predictably.
 
 ---
 
+## Agenda
+
+- Pick the right protocol level (L7 vs L4)
+- ALB vs NLB vs API Gateway
+- Health checks + TLS termination choices
+- Security boundaries (WAF, private APIs)
+
+---
+
 ## First decision: protocol level
 
 - Layer 7 (HTTP): routing by host/path, headers
@@ -171,13 +180,18 @@ Common rule groups:
 
 ---
 
-## Summary
+## Recap
 
-- ALB: HTTP routing features
-- NLB: TCP/UDP performance and pass-through
-- API GW: API management features
+- Pick the right protocol level (L7 vs L4)
+- ALB vs NLB vs API Gateway
+- Health checks + TLS termination choices
+- Security boundaries (WAF, private APIs)
 
-Next: multi-VPC and hybrid connectivity.
+---
+
+## Next
+
+Multi-VPC and hybrid connectivity.
 
 ---
 

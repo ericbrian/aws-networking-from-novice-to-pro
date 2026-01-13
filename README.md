@@ -2,6 +2,7 @@
 
 This repo is a slide-show style course you can study module-by-module.
 Each module has:
+
 - a **slide deck** in `slides/`
 - a **quiz** in `quizzes/` (with an answer key)
 
@@ -10,17 +11,20 @@ Each module has:
 These slide decks are written in **Marp-flavored Markdown**.
 
 ### Option A (recommended): VS Code + Marp extension
+
 1. Install the VS Code extension **“Marp for VS Code”** (`marp-team.marp-vscode`).
 2. Reload VS Code (Command Palette → **Developer: Reload Window**) if prompted.
 3. Open any file in `slides/`.
 4. Open the Command Palette (`Cmd+Shift+P`) and run one of:
-	- **Marp: Open Preview**
-	- **Marp: Open Preview to the Side**
+    - **Marp: Open Preview**
+    - **Marp: Open Preview to the Side**
 
 If you **don’t see any “Marp:” commands**, the extension is not installed or not activated. Confirm it’s installed/enabled, then reload the window.
 
 ### Option B: Export to HTML (guaranteed)
+
 This repo includes exported HTML slide decks you can open directly:
+
 - `exports/01-networking-foundations.html`
 - `exports/02-vpc-subnets-routing.html`
 - `exports/03-security-groups-nacls-reachability.html`
@@ -35,6 +39,7 @@ This repo includes exported HTML slide decks you can open directly:
 You can also export more decks later via the Marp CLI or VS Code extension.
 
 ### Option C: Read as Markdown
+
 You can also just read the Markdown files directly—each `---` separator is a new slide.
 
 ## Course order
@@ -53,6 +58,7 @@ You can also just read the Markdown files directly—each `---` separator is a n
 ## Interactive quizzes
 
 There’s a simple interactive quiz runner that:
+
 - shows one question at a time
 - locks your answer after you click
 - tells you whether you were correct
@@ -63,6 +69,7 @@ Because browsers may block module loading from `file://`, run a local server fro
 - `python3 -m http.server 8000`
 
 Then open:
+
 - `http://localhost:8000/interactive-quiz/`
 
 ## Is this a good start from novice → pro?

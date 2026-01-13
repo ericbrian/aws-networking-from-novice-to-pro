@@ -37,6 +37,16 @@ How AWS decides “allowed” at the API level.
 
 ---
 
+## Agenda
+
+- Policy statement building blocks
+- Evaluation logic (explicit Deny wins)
+- Conditions (where most power lives)
+- Permission boundaries
+- Organizations SCPs + common pitfalls
+
+---
+
 ## Policy building blocks
 
 A statement typically includes:
@@ -161,13 +171,19 @@ Always remember: Deny wins.
 
 ---
 
-## Summary
+## Recap
 
-- Policies are the language of AWS authorization
-- Deny wins; everything else must explicitly allow
-- Boundaries and SCPs are guardrails (they don’t grant)
+- Policy statement building blocks
+- Evaluation logic (explicit Deny wins)
+- Conditions (where most power lives)
+- Permission boundaries
+- Organizations SCPs + common pitfalls
 
-Next: logging, detection, and response.
+---
+
+## Next
+
+Logging, detection, and response.
 
 ---
 

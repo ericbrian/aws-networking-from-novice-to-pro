@@ -37,6 +37,15 @@ From “what is a VPC?” to thinking like a network engineer in AWS.
 
 ---
 
+## Agenda
+
+- Addressing (IPs and CIDR)
+- Routing (how traffic finds a path)
+- Filtering (SGs/NACLs)
+- Name resolution (DNS)
+
+---
+
 ## Your core mental model (keep this forever)
 
 For a packet to work end-to-end, you need:
@@ -151,16 +160,18 @@ Plus: instance OS firewall, app config, and routing.
 - Design for failure: use multiple AZs, redundant routes, and resilient endpoints
 
 ---
+## Recap
 
-## Summary
+- Addressing (IPs and CIDR)
+- Routing (how traffic finds a path)
+- Filtering (SGs/NACLs)
+- Name resolution (DNS)
 
-You now have the 4-part mental checklist:
-- Addressing
-- Routing
-- Filtering
-- Name resolution
+---
 
-Next: build a VPC, subnets, and routing patterns.
+## Next
+
+Build a VPC, subnets, and routing patterns.
 
 ---
 
