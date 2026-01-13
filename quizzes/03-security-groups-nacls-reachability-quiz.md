@@ -46,23 +46,29 @@ Answer first without looking at the key. Then check the answers.
 
 12. Name the security layers a request passes through from the internet to an application (in order).
 
+13. What is a prefix list, and where can you use it?
+
+14. What's the difference between AWS-managed and customer-managed prefix lists?
+
+15. True/False: Using a prefix list with 50 CIDRs counts as 1 rule in your security group.
+
 ---
 
 ## 🎯 Tricky Questions
 
 **⚠️ Warning: These questions are designed to trick you! Read carefully.**
 
-13. You add an inbound rule allowing TCP 443. What outbound rule must you add for return traffic to work?
+16. You add an inbound rule allowing TCP 443. What outbound rule must you add for return traffic to work?
     A. Outbound TCP 443 to 0.0.0.0/0
     B. Outbound TCP 1024-65535 to the client IP range
     C. Outbound all traffic to 0.0.0.0/0
     D. None
 
-14. True/False: A Security Group can have both Allow and Deny rules.
+17. True/False: A Security Group can have both Allow and Deny rules.
 
-15. Your EC2 instance is in a private subnet. You add it to a Security Group that allows inbound SSH from 0.0.0.0/0. Can the internet SSH to it now?
+18. Your EC2 instance is in a private subnet. You add it to a Security Group that allows inbound SSH from 0.0.0.0/0. Can the internet SSH to it now?
 
-16. Two instances are in the same VPC but different subnets. Their Security Groups allow all outbound. Can they communicate?
+19. Two instances are in the same VPC but different subnets. Their Security Groups allow all outbound. Can they communicate?
 
 ## Answer key
 
@@ -90,12 +96,18 @@ Answer first without looking at the key. Then check the answers.
 
 12. WAF → ALB Security Group → NACL → App Security Group → App (OS/process).
 
+13. A prefix list is a named collection of CIDR blocks. You can use them in security group rules and route tables instead of specifying individual CIDRs.
+
+14. AWS-managed prefix lists are pre-built by AWS for their services (S3, DynamoDB, CloudFront) and automatically updated. Customer-managed prefix lists are created by you for your own CIDR ranges and can be shared across accounts via RAM.
+
+15. **Tricky!** It counts as 1 rule in terms of management, but each CIDR _entry_ in the prefix list counts toward the 1000-rule-per-ENI limit. So it simplifies management but doesn't bypass the architectural limit.
+
 **Tricky Questions:**
 
-13. **D. None.** This is the trick! Security Groups are **stateful**—return traffic is automatically allowed. You only need outbound rules for _initiated_ connections, not responses.
+16. **D. None.** This is the trick! Security Groups are **stateful**—return traffic is automatically allowed. You only need outbound rules for _initiated_ connections, not responses.
 
-14. **False.** Security Groups are **allow-only**. There is no Deny option. If you need explicit denies, use NACLs.
+17. **False.** Security Groups are **allow-only**. There is no Deny option. If you need explicit denies, use NACLs.
 
-15. **No.** The trick: being in a _private subnet_ means there's no route to an Internet Gateway. The SG rule is irrelevant—the routing makes it unreachable from the internet regardless.
+18. **No.** The trick: being in a _private subnet_ means there's no route to an Internet Gateway. The SG rule is irrelevant—the routing makes it unreachable from the internet regardless.
 
-16. **Not necessarily.** The trick: outbound rules don't guarantee the _destination_ will accept. The receiving instance's SG must have an _inbound_ rule allowing the traffic. Both directions of rules matter.
+19. **Not necessarily.** The trick: outbound rules don't guarantee the _destination_ will accept. The receiving instance's SG must have an _inbound_ rule allowing the traffic. Both directions of rules matter.

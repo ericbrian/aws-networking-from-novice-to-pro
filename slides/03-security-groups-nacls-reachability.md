@@ -176,6 +176,55 @@ SGs don't log denials—use **VPC Flow Logs** for visibility.
 
 ---
 
+## Prefix lists (what they are)
+
+A **prefix list** is a named collection of CIDR blocks.
+
+Use them in:
+
+- Security group rules (instead of individual CIDRs)
+- Route tables (instead of individual destination CIDRs)
+
+Benefits:
+
+- **Reduce rule count**: 1 prefix list = 1 rule (even with many CIDRs)
+- **Central management**: Update once, applies everywhere it's referenced
+
+---
+
+## Prefix list types
+
+**AWS-managed prefix lists**:
+
+- Pre-built for AWS services (S3, DynamoDB, CloudFront)
+- Automatically updated by AWS
+- Example: `com.amazonaws.us-east-1.s3`
+
+**Customer-managed prefix lists**:
+
+- You define the CIDR ranges
+- Use for: partner IPs, corporate networks, trusted sources
+- Can be shared across accounts via **Resource Access Manager (RAM)**
+
+---
+
+## Prefix lists in practice
+
+In a Security Group rule:
+
+- Instead of 50 individual CIDR rules → 1 prefix list rule
+
+In a Route Table:
+
+- Route to S3 endpoint using the S3 managed prefix list
+
+Rule count impact:
+
+- Each prefix list entry counts toward the 1000-rule limit
+- But in the _rule definition_, it's just 1 rule to manage
+
+---
+
 ## Security Group best practices
 
 - Name SGs by **function**, not server (`web-tier-sg`, not `instance-1-sg`)
@@ -236,6 +285,7 @@ Next: NAT, endpoints, and DNS for private networking.
 - **DNS** — Domain Name System
 - **ENI** — Elastic Network Interface
 - **NACL** — Network Access Control List
+- **RAM** — Resource Access Manager
 - **SG** — Security Group
 - **TCP** — Transmission Control Protocol
 - **VPC** — Virtual Private Cloud
