@@ -154,6 +154,19 @@ Always remember: Deny wins.
 
 ---
 
+## Critical Use Case: KMS Protection
+
+**The Danger**: Deleting a KMS Key renders all data encrypted by it **permanently unrecoverable**.
+
+**The Risk**: An admin or compromised credential might accidentally/maliciously schedule deletion.
+
+**The Fix**: Apply an SCP at the Root/OU level.
+
+- **Deny** `kms:ScheduleKeyDeletion`
+- **Result**: NO ONE (not even the account root user) can delete keys unless the SCP is detached.
+
+---
+
 ## Common pitfalls
 
 - “I’m admin” but SCP denies it

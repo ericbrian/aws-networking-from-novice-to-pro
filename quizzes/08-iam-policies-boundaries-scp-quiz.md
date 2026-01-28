@@ -58,6 +58,18 @@ Answer first without looking at the key. Then check the answers.
 
 15. Your IAM policy explicitly allows `ec2:TerminateInstances`, but another policy explicitly denies it. What happens when you try to terminate?
 
+16. Why is deleting a KMS key considered a "critical risk"?
+    A. You might lose the key policy
+    B. It costs extra money to delete it
+    C. Data encrypted by that key becomes permanently unrecoverable
+    D. It breaks the VPC
+
+17. How can you effectively prevent even the root user from deleting a specific KMS key?
+    A. Remove the root user's password
+    B. Apply an SCP that denies `kms:ScheduleKeyDeletion`
+    C. Use a permission boundary on the root user (which is not possible)
+    D. Ask them nicely
+
 ## Answer key
 
 1. Effect, Action, Resource, Condition.
@@ -91,3 +103,5 @@ Answer first without looking at the key. Then check the answers.
 14. **No.** This is the key trick about SCPs! SCPs **set limits**—they don't _grant_ permissions. They define the maximum permissions possible. You still need an identity policy (like AdministratorAccess) to actually allow actions.
 
 15. **Access Denied.** The golden rule: **explicit Deny always wins**. It doesn't matter how many Allow statements you have—one explicit Deny overrides them all.
+16. C
+17. B
