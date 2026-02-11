@@ -181,6 +181,7 @@ IAM fundamentals (who can do what).
 - **DX** — Direct Connect
 - **NACL** — Network Access Control List
 - **SG** — Security Group
+- **IGW** — Internet Gateway
 - **TGW** — Transit Gateway
 - **VPN** — Virtual Private Network
 - **VPC** — Virtual Private Cloud
