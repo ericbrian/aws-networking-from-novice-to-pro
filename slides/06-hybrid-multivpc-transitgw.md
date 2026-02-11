@@ -97,6 +97,7 @@ Think of TGW as a hub that:
 ## Segmentation with TGW
 
 Common pattern:
+
 - Shared Services VPC
 - Prod VPCs
 - Dev VPCs
@@ -136,6 +137,7 @@ Often paired with VPN for encryption/backup.
 ## Inspection patterns (high level)
 
 Some orgs require centralized inspection:
+
 - Hub-and-spoke with inspection VPC
 - Egress control via NAT + firewall
 - East-west filtering via appliances
@@ -159,6 +161,16 @@ Start simple unless policy requires otherwise.
 IAM fundamentals (who can do what).
 
 ---
+
+## IGW vs TGW — VPN traffic handling
+
+- Internet Gateway (IGW): provides ingress/egress for internet-originated traffic to resources in a VPC. IGWs are not the termination point for VPN tunnels.
+
+- Transit Gateway (TGW): central hub that terminates IPsec VPN tunnels and routes VPN-originated traffic into the appropriate VPC attachments. Use TGW route tables to control where tunneled traffic is forwarded.
+
+- Security Groups and prefix-lists: apply access controls to instances and services. To permit VPN-originated traffic, add the VPN CIDRs or a prefix-list to the relevant Security Group ingress rules (SGs control resource-level access regardless of whether traffic arrived via IGW or TGW).
+
+- Recommended pattern: terminate VPNs at the TGW, propagate/associate attachments into TGW route tables, and enforce access using Security Groups (and NACLs where needed). Avoid relying on IGW controls for internal VPN traffic because VPNs are routed via the TGW, not the IGW.
 
 ## Acronyms (quick reference)
 
