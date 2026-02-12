@@ -168,6 +168,8 @@ Start simple unless policy requires otherwise.
 
 ## IGW vs TGW — VPN traffic handling (cont.)
 
+<!-- footer: "" -->
+
 - Security Groups and prefix-lists: apply access controls to instances and services. To permit VPN-originated traffic, add the VPN CIDRs or a prefix-list to the relevant Security Group ingress rules.
 
 - Recommended pattern: terminate VPNs at the TGW, propagate/associate attachments into TGW route tables, and enforce access using Security Groups (and NACLs where needed).
