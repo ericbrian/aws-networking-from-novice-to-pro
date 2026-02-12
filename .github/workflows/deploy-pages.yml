@@ -31,13 +31,20 @@ jobs:
         run: |
           npm --yes exec -- @marp-team/marp-cli@latest --version
 
-          rm -f docs/*.html
-          npm --yes exec -- \
-            @marp-team/marp-cli@latest \
-            --html \
-            --allow-local-files \
-            --output docs \
-            slides/*.md
+          mkdir -p docs
+
+          # Keep docs/index.html (hand-authored). Only remove generated decks.
+          rm -f docs/[0-9][0-9]-*.html
+
+          for deck in slides/*.md; do
+            name="$(basename "$deck" .md)"
+            npm --yes exec -- \
+              @marp-team/marp-cli@latest \
+              --html \
+              --allow-local-files \
+              "$deck" \
+              -o "docs/${name}.html"
+          done
 
           # Disable Jekyll so files like "_" paths aren't treated specially.
           touch docs/.nojekyll
