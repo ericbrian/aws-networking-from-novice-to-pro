@@ -4,22 +4,22 @@ title: Hybrid & Multi-VPC Connectivity — Peering, TGW, VPN, DX
 paginate: true
 style: |
   section {
-    background: #fbf6ea;
-    color: #1f2937;
+    background: #0b1220;
+    color: #e5e7eb;
   }
 
   h1, h2, h3 {
-    color: #111827;
+    color: #f8fafc;
   }
 
-  a { color: #1e40af; }
+  a { color: #93c5fd; }
 
   code {
-    background: #f3e8d2;
+    background: #111827;
   }
 
   pre code {
-    background: #f3e8d2;
+    background: #111827;
   }
 ---
 
