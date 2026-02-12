@@ -26,7 +26,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
 
       - name: Build slide HTML into docs/
         run: |
@@ -42,6 +41,8 @@ jobs:
 
           # Disable Jekyll so files like "_" paths aren't treated specially.
           touch docs/.nojekyll
+
+          test -f docs/index.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
