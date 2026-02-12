@@ -158,6 +158,8 @@ Start simple unless policy requires otherwise.
 
 ## IGW vs TGW — VPN traffic handling
 
+<!-- footer: Continued on next slide → -->
+
 - Internet Gateway (IGW): provides ingress/egress for internet-originated traffic to resources in a VPC. IGWs are not the termination point for VPN tunnels.
 
 - Transit Gateway (TGW): central hub that terminates IPsec VPN tunnels and routes VPN-originated traffic into the appropriate VPC attachments. Use TGW route tables to control where tunneled traffic is forwarded.
